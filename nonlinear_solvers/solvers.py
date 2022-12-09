@@ -1,4 +1,5 @@
 """A module providing numerical solvers for nonlinear equations."""
+import numpy as np
 
 
 class ConvergenceError(Exception):
@@ -31,8 +32,16 @@ def newton_raphson(f, df, x_0, eps=1.0e-5, max_its=20):
     float
         The approximate root computed using Newton iteration.
     """
-    # Delete these two lines when implementing the method.
-    raise NotImplementedError
+    x_current = x_0
+    it_count = 0
+    while it_count <= max_its:
+        x_next = x_0 - f(x_current) / df(x_current)
+        convergence = np.abs(f(x_next))
+        if convergence < eps:
+            return x_next
+        else:
+            x_current = x_next
+    raise ConvergenceError
 
 
 def bisection(f, x_0, x_1, eps=1.0e-5, max_its=20):
